@@ -7,7 +7,6 @@ from PIL import Image
 from datetime import datetime
 from sympy.utilities.misc import find_executable
 find_executable('latex')
-sys.path.append()
 
 load_dotenv(override=True)
 
@@ -162,7 +161,7 @@ async def on_message(message):
                     pic_name, filename=pic_name)
                 await message.channel.send(file=file)
                 os.remove(pic_name)
-                
+
             except Exception as e:
                 print(e)
                 await message.channel.send("出力に失敗しました。")
