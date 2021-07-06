@@ -188,6 +188,11 @@ async def on_voice_state_update(member, before, after):
         vcn_channel = client.guilds[0].text_channels[0].id
     alert_channel = client.get_channel(vcn_channel)
     if is_notification == True and vcn_mute_from >= datetime.now().hour and vcn_mute_to <= datetime.now().hour:
+        print(vcn_mute_from)
+        print(datetime.now().hour)
+        print(vcn_mute_to)
+        print(vcn_mute_from >= datetime.now().hour)
+        print(vcn_mute_to <= datetime.now().hour)
         if before.channel is None:
             embed = discord.Embed(
                 title=f"{member.nick or member.name}が {after.channel.name} に参加しました", description="やっほー", color=0xff0000)
