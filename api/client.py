@@ -1,6 +1,10 @@
 import os
 from dotenv import load_dotenv
 import discord
+import sympy
+from PIL import Image
+from datetime import datetime
+
 
 load_dotenv(override=True)
 
@@ -39,7 +43,8 @@ async def on_message(message):
 
     if message.content.split()[0] == '/help':
         await message.channel.send("/vcn_help ： VC通知コマンド一覧を表示 \n" +
-                                   "/amg_help ： AmongUsサポートコマンド一覧を表示 \n")
+                                   "/amg_help ： AmongUsサポートコマンド一覧を表示 \n" +
+                                   "/tex_help ： TexBot機能説明を表示 \n")
 
     if message.content.split()[0] == '/vcn_help':
         await message.channel.send("/vcn_help ： VC通知コマンド一覧を表示 \n" +
@@ -117,6 +122,47 @@ async def on_message(message):
         emoji = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣',
                  '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟️']
         await message.channel.send("ゲームが終了しました")
+
+    if message.content.split()[0] == '/tex_help':
+        await message.channel.send("/tex_help ： TexBot機能説明を表示 \n" +
+                                   "\```tex \n" +
+                                   "texのコード \n" +
+                                   "\``` \n" +
+                                   "例) \n" +
+                                   "\```tex \n" +
+                                   r"$\frac{b}{a}$"+" \n" +
+                                   "\```")
+
+    if '```tex' in message.content:
+        if message.author.id != int(os.environ.get("CLIENT_ID")):
+            pic_name = f'{datetime.now()}.png'
+            sympy.init_printing()
+            wave_equation = message.content.split("""```tex""")[1][:-3]
+
+            try:
+                sympy.preview(wave_equation, viewer='file', filename=pic_name, euler=False,
+                              dvioptions=["-T", "tight", "-z", "0", "--truecolor", "-D 600"])
+                im = Image.open(pic_name)
+
+                def add_margin(pil_img, top, right, bottom, left, color):
+                    width, height = pil_img.size
+                    new_width = width + right + left
+                    new_height = height + top + bottom
+                    result = Image.new(
+                        pil_img.mode, (new_width, new_height), color)
+                    result.paste(pil_img, (left, top))
+                    return result
+
+                im_new = add_margin(im, 50, 50, 50, 50, (255, 255, 255))
+                im_new.save(pic_name, quality=95)
+                file = discord.File(
+                    pic_name, filename=pic_name)
+                await message.channel.send(file=file)
+                os.remove(pic_name)
+                
+            except Exception as e:
+                print(e)
+                await message.channel.send("出力に失敗しました。")
 
 
 @client.event
