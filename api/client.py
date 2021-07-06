@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import load_dotenv
 import discord
 import sympy
@@ -6,6 +7,7 @@ from PIL import Image
 from datetime import datetime
 from sympy.utilities.misc import find_executable
 find_executable('latex')
+sys.path.append()
 
 load_dotenv(override=True)
 
@@ -137,7 +139,7 @@ async def on_message(message):
     if '```tex' in message.content:
         if message.author.id != int(os.environ.get("CLIENT_ID")):
             pic_name = f'{datetime.now()}.png'
-            sympy.init_printing()
+            sympy.init_printing(use_latex=True)
             wave_equation = message.content.split("""```tex""")[1][:-3]
 
             try:
