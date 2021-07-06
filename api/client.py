@@ -4,7 +4,8 @@ import discord
 import sympy
 from PIL import Image
 from datetime import datetime
-
+from sympy.utilities.misc import find_executable
+find_executable('latex')
 
 load_dotenv(override=True)
 
