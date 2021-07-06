@@ -2,7 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 import discord
-from sympy import *
+import sympy
 from PIL import Image
 from datetime import datetime
 from sympy.utilities.misc import find_executable
