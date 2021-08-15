@@ -3,8 +3,6 @@ import os
 import sys
 from dotenv import load_dotenv
 import discord
-import sympy
-from PIL import Image
 from datetime import datetime
 
 load_dotenv(override=True)
