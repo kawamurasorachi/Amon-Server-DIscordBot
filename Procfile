@@ -1,1 +1,1 @@
-amon-discord-bot: python api/client.py
+amon-discord-bot: python client.py

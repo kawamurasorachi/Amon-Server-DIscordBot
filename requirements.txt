@@ -1,5 +1,2 @@
 discord.py == 1.4.0
 python-dotenv == 0.17.1
-sympy == 1.8
-pillow == 6.2.1
-pyglet == 1.5.0
