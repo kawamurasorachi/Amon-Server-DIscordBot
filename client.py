@@ -88,17 +88,22 @@ async def on_voice_state_update(member, before, after):
     # if vcn_channel == None:
     #     vcn_channel = client.guilds[0].text_channels[0].id
     alert_channel = client.get_channel(vcn_channel)
-    now_time = datetime.now(pytz.timezone('Asia/Tokyo')).hour
-    if is_notification == True and vcn_mute_from >= now_time and vcn_mute_to <= now_time:
+    now = datetime.now(pytz.timezone('Asia/Tokyo'))
+    now_time = now.strftime('%H:%M:%S')
+    if is_notification == True and vcn_mute_from >= now.hour and vcn_mute_to <= now.hour:
         if before.channel is None:
             embed = discord.Embed(
                 title="{0}が {1} に参加しました".format(member.nick or member.name, after.channel.name), description=msg_join, color=0xff0000)
             embed.set_thumbnail(url=member.avatar_url)
+            embed.add_field(name="Time", value=now_time, inline=True)
+            embed.add_field(name="Members", value=len(after.channel.voice_states.keys()), inline=True)
             await alert_channel.send(embed=embed)
         elif after.channel is None:
             embed = discord.Embed(
-                title="{0}が {1} から抜けました".format(member.nick or member.name,before.channel.name), description=msg_leave, color=0x0000ff,)
+                title="{0}が {1} から抜けました".format(member.nick or member.name, before.channel.name), description=msg_leave, color=0x0000ff)
             embed.set_thumbnail(url=member.avatar_url)
+            embed.add_field(name="Time", value=now_time, inline=True)
+            embed.add_field(name="Members", value=len(before.channel.voice_states.keys()), inline=True)
             await alert_channel.send(embed=embed)
 
 client.run(os.environ.get("DISCORD_TOKEN"))
